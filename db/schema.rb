@@ -10,13 +10,49 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_05_14_112014) do
+ActiveRecord::Schema[7.0].define(version: 2023_05_14_153306) do
+  create_table "comments", force: :cascade do |t|
+    t.text "content"
+    t.integer "user_id", null: false
+    t.integer "gossip_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["gossip_id"], name: "index_comments_on_gossip_id"
+    t.index ["user_id"], name: "index_comments_on_user_id"
+  end
+
+  create_table "gossips", force: :cascade do |t|
+    t.string "title"
+    t.text "content"
+    t.integer "user_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_gossips_on_user_id"
+  end
+
+  create_table "likes", force: :cascade do |t|
+    t.integer "user_id", null: false
+    t.integer "gossip_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["gossip_id"], name: "index_likes_on_gossip_id"
+    t.index ["user_id"], name: "index_likes_on_user_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "name"
     t.string "password_digest"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "email"
+    t.string "city"
+    t.integer "age"
+    t.text "description"
   end
 
+  add_foreign_key "comments", "gossips"
+  add_foreign_key "comments", "users"
+  add_foreign_key "gossips", "users"
+  add_foreign_key "likes", "gossips"
+  add_foreign_key "likes", "users"
 end

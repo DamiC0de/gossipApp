@@ -1,2 +1,78 @@
-<h1>Gossips#show</h1>
-<p>Find me in app/views/gossips/show.html.erb</p>
+<%= render 'layouts/header'%>
+<body class="d-flex flex-column h-100 bg-light">
+    <main class="flex-shrink-0">
+        <!-- Navigation-->
+        <nav class="navbar navbar-expand-lg navbar-light bg-white py-3">
+            <div class="container px-5">
+            <a class="navbar-brand" href="<%= root_path %>"><span class="fw-bolder text-primary">Gossips</span></a>
+                <%= render 'layouts/navbar'%>
+            </div>
+        </nav>
+
+        <div class="container px-5 my-5">
+            <h1 class="display-3 fw-bolder mb-5"><span class="text-gradient d-inline"><%= @gossip.user.name %> wrote<br></span></h1>
+            <img class="tchat" <%= image_tag 'tchat.png', alt: 'Description de l\'image' %>     
+
+            <h1 div class="display-6 fw-light"><%= @gossip.title %></h1>
+            <h2 div class="fs-3 fw-light text-muted"><%= @gossip.content %></h2>
+            <p class="card-text"><small class="text-muted">City: <%= @gossip.user.city %></small></p>
+            <% if current_user == @gossip.user %>
+            <%= link_to "Edit", edit_gossip_path(@gossip), class: "btn btn-warning mt-4" %>
+            
+            <%# Likes %>
+            <% if current_user %>
+                <% like = current_user.likes.find_by(gossip_id: @gossip.id) %>
+                <% if like %>
+                    <%= button_to gossip_like_path(@gossip, like), method: :delete do %>
+                        <i class="fa-solid fa-heart"></i>
+                    <% end %>
+                <% else %>
+                    <%= button_to gossip_likes_path(@gossip), method: :post do %>
+                        <i class="fa-regular fa-heart"></i>
+                    <% end %>
+                    <%= @gossip.likes.count %>
+                <% end %>
+                <p><%= @gossip.likes.count %></p>
+            <% end %>
+
+
+            <% end %>
+
+            <% @gossip.comments.each do |comment| %>
+            <div class="card mt-4">
+                <div class="card-body">
+                <h5 class="card-title"><%= comment.user.name %></h5>
+                <p class="card-text"><%= comment.content %></p>
+                <p class="card-text"><small class="text-muted">Posted <%= time_ago_in_words(comment.created_at) %> ago</small></p>
+
+                <% if current_user == comment.user %>
+                    <%= link_to "Edit", edit_gossip_comment_path(@gossip, comment), class: "btn btn-warning mt-4" %>
+                <% end %>
+                
+                <% if current_user == comment.user || current_user == @gossip.user %>
+                    <%= button_to "Remove", gossip_comment_path(@gossip, comment),
+                                method: :delete,
+                                data: { confirm: "Are you sure?" },
+                                class: "btn btn-danger mt-4" %>
+
+                <% end %>
+                </div>
+            </div>
+            <% end %>
+
+
+
+            <% if current_user %>
+            <%= form_for([@gossip, @gossip.comments.build]) do |f| %>
+                <div class="form-group">
+                    <%= f.label :content, "Add a comment" %>
+                    <%= f.text_area :content, class: 'form-control' %>
+                </div>
+                <%= f.submit "Add Comment", class: 'btn btn-primary mt-4' %>
+            <% end %>
+            <% end %>
+
+
+        </div>
+    </main>
+<%= render 'layouts/footer'%>

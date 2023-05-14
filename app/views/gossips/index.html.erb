@@ -37,14 +37,47 @@
             <section class="bg-light py-5">
                 <div class="container px-5">
                     <div class="row gx-5 justify-content-center">
+                    
                         <div class="col-xxl-8">
                             <div class="text-center my-5">
                                 <h2 class="display-5 fw-bolder"><span class="text-gradient d-inline">Latest Gossips</span></h2>
-
-                                <%# <%= render '/layouts/home/latest_gossips'%> %>
-                                <%# <%= link_to "Écrire un gossip", new_gossip_model_path, class: "btn btn-primary" %> %>
-
                                 <hr>
+                                <%= link_to "Écrire un gossip", new_gossip_path, class: "btn btn-primary" %>
+                                <% @gossips.each do |gossip| %>
+                                <div class="card my-3">
+                                    <div class="card-body">
+                                    <h5 class="card-title"><%= gossip.title %></h5>
+                                    <p class="card-text"><%= gossip.content %></p>
+                                    <p class="card-text"><small class="text-muted">Written by: <%= gossip.user.name %></small></p>
+                                    <p class="card-text"><small class="text-muted">City: <%= gossip.user.city %></small></p>
+                                    <%= link_to "Take a look", gossip_path(gossip), class: "btn btn-primary" %>
+                                    </div>
+                                </div>
+                                <%# Likes %>
+                                <% if current_user %>
+                                    <% like = current_user.likes.find_by(gossip_id:gossip.id) %>
+                                    <% if like %>
+                                        <%= button_to gossip_like_path(gossip, like), method: :delete, style: "border: none; background: none;" do %>
+                                            <i class="fa-solid fa-heart"></i>
+                                        <% end %>
+                                    <% else %>
+                                        <%= button_to gossip_likes_path(gossip), method: :post, style: "border: none; background: none;" do %>
+                                            <i class="fa-regular fa-heart"></i>
+                                        <% end %>
+                                        <%= gossip.likes.count %>
+                                    <% end %>
+                                <% end %>
+
+                                <% end %>
+
+
+
+
+
+
+
+
+
 
                                 <div class="d-flex justify-content-center fs-2 gap-4">
                                     <a class="text-gradient" href="#!"><i class="bi bi-twitter"></i></a>

@@ -1,0 +1,57 @@
+<%= render 'layouts/header' %>
+
+<body class="d-flex flex-column h-100 bg-light">
+    <main class="flex-shrink-0">
+        <!-- Navigation-->
+        <nav class="navbar navbar-expand-lg navbar-light bg-white py-3">
+            <div class="container px-5">
+                <a class="navbar-brand" href="<%= root_path %>"><span class="fw-bolder text-primary">Gossip</span></a>
+                <%= render 'layouts/navbar' %>
+            </div>
+        </nav>
+        <!-- Page Content-->
+        <div class="container px-5 my-5">
+            <div class="text-center mb-5">
+                <h1 class="display-5 fw-bolder mb-0"><span class="text-gradient d-inline">Edit your Profil !</span></h1>
+            </div>
+            <div class="row gx-5 justify-content-center">
+                <div class="col-lg-8 col-xl-6">
+                    <%= form_with(model: @user, local: true) do |f| %>
+                        <div class="form-floating mb-3">
+                            <%= f.text_field :name, class: "form-control", id: "name",  value: @user.name %>
+                            <%= f.label :name, 'Nom' %>
+                        </div>
+
+                        <div class="form-floating mb-3">
+                            <%= f.number_field :age, class: "form-control", id: "age",  value: @user.age %>
+                            <%= f.label :age, 'Age' %>
+                        </div>
+
+                        <div class="form-floating mb-3">
+                            <%= f.email_field :email, class: "form-control", id: "email",  value: @user.email %>
+                            <%= f.label :email, 'Email' %>
+                        </div>
+
+                        <div class="form-floating mb-3">
+                            <%= f.text_field :city, class: "form-control", id: "city",  value: @user.city %>
+                            <%= f.label :city, 'Ville' %>
+                        </div>
+
+                        <div class="form-floating mb-3">
+                            <%= f.text_field :description, class: "form-control", id: "description",  value: @user.description %>
+                            <%= f.label :description, 'Description' %>
+                        </div>
+
+                        <div class="form-floating mb-3">
+                            <%= f.password_field :password, class: "form-control", id: "password", readonly: true %>
+                            <%= f.label :password, 'Mot de passe' %>
+                        </div>
+
+                        <%= f.submit "Modifier", class: "btn btn-primary" %>
+                    <% end %>
+                </div>
+            </div>
+        </div>
+    </main>
+
+<%= render 'layouts/footer' %>
