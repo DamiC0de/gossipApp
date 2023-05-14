@@ -1,0 +1,24 @@
+<%= render 'layouts/header' %>
+
+    <body class="d-flex flex-column h-100 bg-light">
+        <main class="flex-shrink-0">
+            <!-- Navigation-->
+            <nav class="navbar navbar-expand-lg navbar-light bg-white py-3">
+                <div class="container px-5">
+                <a class="navbar-brand" href="<%= root_path %>"><span class="fw-bolder text-primary">Gossip</span></a>
+
+
+                    <%= render 'layouts/navbar'%>
+
+                </div>
+            </nav>
+            <!-- Page Content-->
+            <div class="container px-5 my-5">
+                <div class="text-center mb-5">
+                    <h1 class="display-5 fw-bolder mb-0"><span class="text-gradient d-inline">Hello <%= @name %>!</span></h1>
+
+                </div>
+                
+        </main>
+
+<%= render 'layouts/footer' %>
